@@ -24,7 +24,7 @@ git clone https://github.com/Tetrax-10/import-imdb-lists-to-tmdb.git
 
 #### Syncing IMDb lists with TMDB lists
 
-If you have already created IMDb lists in TMDB and they are just out of sync, you can update them by putting the IMDb list's ID on the left side and the TMDB list's ID on the right side. This will create the `config.json` file. The script will automatically export your IMDb lists and import them into their respective TMDB lists. If you have private lists on IMDb, you can't simply put the list's ID on the left side due to permission issues. Instead, you can manually export those IMDb lists, place them inside the `imdb-csv` folder, and put their filenames with the extension on the left side.
+If you have already created IMDb lists in TMDB and they are just out of sync, you can update them by putting the IMDb list's ID on the left side and the TMDB list's ID on the right side. This will create the `config.json` file. The script will automatically export your IMDb lists and import them into their respective TMDB lists. If you have private lists on IMDb, you can't simply put the IMDb list's ID on the left side due to permission issues. Instead, you can manually export those IMDb lists, place them inside the `imdb-csv` folder, and put their filenames with the extension on the left side.
 
 #### Importing IMDb lists freshly into TMDB
 
