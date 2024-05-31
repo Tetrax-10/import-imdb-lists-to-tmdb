@@ -1,7 +1,7 @@
 import chalk from "chalk"
 import path from "path"
 
-import { downloadImdbListCSV, csvToJson, processImdbListJson, wait } from "./utils/utils.js"
+import { downloadImdbListCSV, csvToJson, processImdbListJson, wait, printLine, clearLastLine } from "./utils/utils.js"
 import { getFileContents, getJsonContents, writeJSON } from "./utils/glob.js"
 import { addTitlesToTmdbList, clearTmdbList, creteTmdbList, fetchTmdbIdsFromImdbIds, fetchTmdbListDetails } from "./utils/tmdbApiHelper.js"
 
@@ -9,15 +9,21 @@ const CONFIG = getJsonContents("./config.json")
 // reverse ordered, so first list is processed last inorder to get them on top of your tmdb lists page
 const imdbListIds = Object.keys(CONFIG).reverse()
 
+console.log(chalk.green("\nSyncing lists...\n"))
+
 // sync lists
 for (const imdbListId of imdbListIds) {
     let imdbListName
     if (/^ls\d{5,}$/.test(imdbListId)) {
+        // test if the id is a tmdb list id
         imdbListName = (await downloadImdbListCSV(imdbListId)).split(".csv")[0]
     } else {
         // local file support
         imdbListName = imdbListId.split(".csv")[0]
     }
+
+    printLine(chalk.yellow(`Syncing: ${imdbListName}`))
+
     const isNewList = CONFIG[imdbListId] === null ? true : false
 
     if (imdbListName) {
@@ -29,6 +35,7 @@ for (const imdbListId of imdbListIds) {
             tmdbListId = await creteTmdbList(imdbListName)
 
             if (!tmdbListId) {
+                clearLastLine()
                 console.error(chalk.red(`Failed to create TMDB list: ${imdbListId} ${imdbListName}`))
                 break
             }
@@ -46,7 +53,8 @@ for (const imdbListId of imdbListIds) {
 
         // check if list is already in sync
         if (tmdbListDetails.total_results == Object.keys(imdbListItems).length) {
-            console.log(chalk.green(`list already in sync: ${imdbListName}`))
+            clearLastLine()
+            console.log(chalk.green(`Already in sync: ${imdbListName}`))
             continue
         }
 
@@ -55,6 +63,7 @@ for (const imdbListId of imdbListIds) {
             tmdbListId = await clearTmdbList(CONFIG[imdbListId])
 
             if (!tmdbListId) {
+                clearLastLine()
                 console.error(chalk.red(`Failed to clear TMDB list: ${imdbListId} ${imdbListName}`))
                 break
             }
@@ -68,7 +77,10 @@ for (const imdbListId of imdbListIds) {
 
         // add titles to tmdb
         const addTitlesToTmdbListResult = await addTitlesToTmdbList(tmdbListId, tmdbListItems)
-        if (addTitlesToTmdbListResult) console.log(chalk.green(`${isNewList ? "Created" : "Synced"} list: ${imdbListName}`))
+        if (addTitlesToTmdbListResult) {
+            clearLastLine()
+            console.log(chalk.green(`${isNewList ? "Created" : "Synced"}: ${imdbListName}`))
+        }
     }
 }
 

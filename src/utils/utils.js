@@ -67,3 +67,12 @@ export function processImdbListJson(json) {
 export function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }
+
+export function printLine(message) {
+    process.stdout.write(message)
+}
+
+export function clearLastLine() {
+    process.stdout.clearLine(0)
+    process.stdout.cursorTo(0)
+}
