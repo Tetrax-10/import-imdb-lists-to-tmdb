@@ -1,4 +1,16 @@
-{
-    "ls540766631": 8282880,
-    "You can delete me.csv": null
-}
+[
+    {
+        "name": "Watched Movies",
+        "imdbId": "ls540766631",
+        "tmdbId": "8282880",
+        "sortField": null,
+        "isReverse": false
+    },
+    {
+        "name": "You can delete me",
+        "imdbId": "You can delete me.csv",
+        "tmdbId": null,
+        "sortField": null,
+        "isReverse": false
+    }
+]

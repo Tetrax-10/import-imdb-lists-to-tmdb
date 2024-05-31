@@ -1,33 +1,29 @@
 import chalk from "chalk"
 import path from "path"
 
-import { downloadImdbListCSV, csvToJson, processImdbListJson, wait, printLine, clearLastLine } from "./utils/utils.js"
+import { downloadImdbListCSV, csvToJson, wait, printLine, clearLastLine } from "./utils/utils.js"
 import { getFileContents, getJsonContents, writeJSON } from "./utils/glob.js"
 import { addTitlesToTmdbList, clearTmdbList, creteTmdbList, fetchTmdbIdsFromImdbIds, fetchTmdbListDetails } from "./utils/tmdbApiHelper.js"
 
 const CONFIG = getJsonContents("./config.json")
-// reverse ordered, so first list is processed last inorder to get them on top of your tmdb lists page
-const imdbListIds = Object.keys(CONFIG).reverse()
 
 console.log(chalk.green("\nSyncing lists...\n"))
 
-// sync lists
-for (const imdbListId of imdbListIds) {
-    let imdbListName
+for (let { name: imdbListName, imdbId: imdbListId, tmdbId: tmdbListId, sortField, isReverse: isReverseOrder } of structuredClone(CONFIG).reverse()) {
+    let csvFileName
+    // test if the id is a tmdb list id
     if (/^ls\d{5,}$/.test(imdbListId)) {
-        // test if the id is a tmdb list id
-        imdbListName = (await downloadImdbListCSV(imdbListId)).split(".csv")[0]
+        csvFileName = (await downloadImdbListCSV(imdbListId)).split(".csv")[0]
     } else {
         // local file support
-        imdbListName = imdbListId.split(".csv")[0]
+        csvFileName = imdbListId.split(".csv")[0]
     }
 
     printLine(chalk.yellow(`Syncing: ${imdbListName}`))
 
-    const isNewList = CONFIG[imdbListId] === null ? true : false
+    const isNewList = tmdbListId === null ? true : false
 
-    if (imdbListName) {
-        let tmdbListId
+    if (csvFileName) {
         let tmdbListDetails = { total_results: 0 }
 
         if (isNewList) {
@@ -36,20 +32,19 @@ for (const imdbListId of imdbListIds) {
 
             if (!tmdbListId) {
                 clearLastLine()
-                console.error(chalk.red(`Failed to create TMDB list: ${imdbListId} ${imdbListName}`))
+                console.error(chalk.red(`Failed to create TMDB list: ${imdbListName}`))
                 break
             }
 
             // update config
-            CONFIG[imdbListId] = tmdbListId
+            CONFIG.find((listItem) => listItem.imdbId === imdbListId).tmdbId = tmdbListId
             await writeJSON("./config.json", CONFIG)
         } else {
-            tmdbListDetails = await fetchTmdbListDetails(CONFIG[imdbListId])
+            tmdbListDetails = await fetchTmdbListDetails(tmdbListId)
         }
 
-        // process imdb csv
-        const imdbListJson = csvToJson(getFileContents(path.join("./imdb-csv", imdbListName + ".csv")))
-        const imdbListItems = processImdbListJson(imdbListJson)
+        // process imdb csv to json
+        const imdbListItems = csvToJson(getFileContents(path.join("./imdb-csv", csvFileName + ".csv")))
 
         // check if list is already in sync
         if (tmdbListDetails.total_results == Object.keys(imdbListItems).length) {
@@ -60,17 +55,32 @@ for (const imdbListId of imdbListIds) {
 
         // clear tmdb list before adding titles
         if (!isNewList) {
-            tmdbListId = await clearTmdbList(CONFIG[imdbListId])
+            tmdbListId = await clearTmdbList(tmdbListId)
 
             if (!tmdbListId) {
                 clearLastLine()
-                console.error(chalk.red(`Failed to clear TMDB list: ${imdbListId} ${imdbListName}`))
+                console.error(chalk.red(`Failed to clear TMDB list: ${imdbListName}`))
                 break
             }
         }
 
         // wait for 5 secs for TMDB to process
         await wait(5000)
+
+        // sort imdb list
+        imdbListItems.sort((a, b) => {
+            const fieldA = a[sortField]
+            const fieldB = b[sortField]
+
+            if (typeof fieldA === "number" && typeof fieldB === "number") {
+                return fieldB - fieldA // descending
+            } else if (typeof fieldA === "string" && typeof fieldB === "string") {
+                return fieldA.localeCompare(fieldB) // ascending
+            } else {
+                return 0 // In case of different types or other edge cases
+            }
+        })
+        if (isReverseOrder) imdbListItems.reverse()
 
         // fetch tmdb titles
         const tmdbListItems = await fetchTmdbIdsFromImdbIds(imdbListItems)

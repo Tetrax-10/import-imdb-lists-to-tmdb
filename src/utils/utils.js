@@ -58,12 +58,6 @@ export function csvToJson(text, quoteChar = '"', delimiter = ",") {
     })
 }
 
-export function processImdbListJson(json) {
-    return json.map((item) => {
-        return { id: item.Const, title: item.Title }
-    })
-}
-
 export function wait(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms))
 }

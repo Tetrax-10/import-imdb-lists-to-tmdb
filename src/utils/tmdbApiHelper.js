@@ -17,7 +17,7 @@ export async function fetchTmdbIdsFromImdbIds(imdbListItems) {
     const validResponseTypes = ["movie_results", "tv_results"]
     const tmdbIds = []
 
-    for (const { id: imdbId, title: imdbTitle } of imdbListItems) {
+    for (const { Const: imdbId, Title: imdbTitle } of imdbListItems) {
         const response = await fetchTmdbDataFromImdbId(imdbId)
 
         let responseType, tmdbData

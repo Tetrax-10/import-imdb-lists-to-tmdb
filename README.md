@@ -4,6 +4,8 @@ Import and sync IMDb lists to TMDB
 
 ![Demo](https://raw.githubusercontent.com/Tetrax-10/import-imdb-lists-to-tmdb/master/assets/demo.gif)
 
+**Note**: This demo reflects initial release and new changes may not be represented.
+
 ## Installation
 
 1. You need to have [Node.js](https://nodejs.org/) installed.
@@ -24,24 +26,51 @@ git clone https://github.com/Tetrax-10/import-imdb-lists-to-tmdb.git
 
 #### Syncing IMDb lists with TMDB lists
 
-If you have already created IMDb lists in TMDB and they are just out of sync, you can update them by putting the IMDb list's ID on the left side and the TMDB list's ID on the right side. This will create the `config.json` file. The script will automatically export your IMDb lists and import them into their respective TMDB lists. If you have private lists on IMDb, you can't simply put the IMDb list's ID on the left side due to permission issues. Instead, you can manually export those IMDb lists, place them inside the `imdb-csv` folder, and put their filenames with the extension on the left side.
+If you have already created IMDb lists in TMDB and they are just out of sync, you can update them by entering the `IMDb list's ID` and the `TMDB list's ID` in the `imdbId` and `tmdbId` fields, respectively. The script will automatically export your IMDb lists and sync them to their respective TMDB lists. If you have private lists on IMDb, you can't simply use the IMDb list's ID due to permission issues. Instead, you can manually export those IMDb lists, place them inside the `imdb-csv` folder, and enter their filenames with the extension in the `imdbId` field.
 
 #### Importing IMDb lists freshly into TMDB
 
-If you haven't created IMDb lists in TMDB, just follow the same process specified above, except put `null` on the right side since you don't have their respective TMDB lists.
+If you haven't created IMDb lists in TMDB, simply follow the same process specified above, except enter `null` in the `tmdbId` field, since you don't have their respective TMDB lists.
+
+#### Sorting
+
+You can sort the IMDb list and then import it to TMDB by specifying the `sortField` field. You can identify the field names by opening the exported CSV and checking the first line. They will be like `Position, Const, Created, Modified`.
+
+Note: numbers fields are sorted in descending order and strings are sorted in ascending order. You can reverse them by making `isReverse` as `true`.
 
 #### Sample `config.json`
 
 ```js
-{
-    "ls540766631": 8282880, // https://www.imdb.com/list/ls540766631 will be synced with https://www.themoviedb.org/list/8282880
-    "ls540743324": 8301864,
-    "ls540746212": null, // https://www.imdb.com/list/ls540766631 will be imported to a new TMDB list
-    "ls540425139": 8301862,
-    "Romance Movies.csv": 8301861, // Romance Movies.csv inside imdb-csv folder will be synced with https://www.themoviedb.org/list/8301861
-    "ls540639180": 8301860,
-    "My Private List.csv": null // My Private List.csv inside imdb-csv folder will be imported to a new TMDB list
-}
+;[
+    {
+        name: "Watched Movies", // https://www.imdb.com/list/ls540766631 will be synced with https://www.themoviedb.org/list/8282880
+        imdbId: "ls540766631",
+        tmdbId: "8282880",
+        sortField: null,
+        isReverse: true,
+    },
+    {
+        name: "My Favorite Movies", // https://www.imdb.com/list/ls540766631 will be imported to a new TMDB list
+        imdbId: "ls540746212",
+        tmdbId: null,
+        sortField: "IMDb Rating",
+        isReverse: false,
+    },
+    {
+        name: "Romance Movies", // Romance Movies.csv inside imdb-csv folder will be synced with https://www.themoviedb.org/list/8301861
+        imdbId: "Romance Movies.csv",
+        tmdbId: "8301861",
+        sortField: "Num Votes",
+        isReverse: true,
+    },
+    {
+        name: "Weird Movies", // Weird Movies.csv inside imdb-csv folder will be imported to a new TMDB list
+        imdbId: "Weird Movies.csv",
+        tmdbId: null,
+        sortField: "Title",
+        isReverse: false,
+    },
+]
 ```
 
 ## Usage
