@@ -4,7 +4,7 @@ Import and sync IMDb lists to TMDB
 
 ![Demo](https://raw.githubusercontent.com/Tetrax-10/import-imdb-lists-to-tmdb/master/assets/demo.gif)
 
-**Note**: This demo reflects initial release and new changes may not be represented.
+</br>
 
 ## Installation
 
@@ -20,28 +20,32 @@ git clone https://github.com/Tetrax-10/import-imdb-lists-to-tmdb.git
 
 4. Rename the file `.env.example` to `.env` and replace the placeholders with your api key and write access token.
 
-    _Note_: you can create write access token from [here](http://dev.travisbell.com/play/v4_auth.html) and test it out [here](http://dev.travisbell.com/play/v4_list.html).
+    _Note_: You can create write access token from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api) and test it out [here](http://dev.travisbell.com/play/v4_list.html).
 
-## Configure what to import and sync
+</br>
 
-#### Syncing IMDb lists with TMDB lists
+## Configuring config.json
+
+### Syncing IMDb lists with TMDB lists
 
 If you have already created IMDb lists in TMDB and they are just out of sync, you can update them by entering the `IMDb list's ID` and the `TMDB list's ID` in the `imdbId` and `tmdbId` fields, respectively. The script will automatically export your IMDb lists and sync them to their respective TMDB lists. If you have private lists on IMDb, you can't simply use the IMDb list's ID due to permission issues. Instead, you can manually export those IMDb lists, place them inside the `imdb-csv` folder, and enter their filenames with the extension in the `imdbId` field.
 
-#### Importing IMDb lists freshly into TMDB
+### Importing IMDb lists freshly into TMDB
 
 If you haven't created IMDb lists in TMDB, simply follow the same process specified above, except enter `null` in the `tmdbId` field, since you don't have their respective TMDB lists.
 
-#### Sorting
+### Sorting
 
 You can sort the IMDb list and then import it to TMDB by specifying the `sortField` field. You can identify the field names by opening the exported CSV and checking the first line. They will be like `Position, Const, Created, Modified`.
 
 Note: numbers fields are sorted in descending order and strings are sorted in ascending order. You can reverse them by making `isReverse` as `true`.
 
-#### Sample `config.json`
+</br>
+
+## Sample `config.json`
 
 ```js
-;[
+[
     {
         name: "Watched Movies", // https://www.imdb.com/list/ls540766631 will be synced with https://www.themoviedb.org/list/8282880
         imdbId: "ls540766631",
@@ -72,6 +76,8 @@ Note: numbers fields are sorted in descending order and strings are sorted in as
     },
 ]
 ```
+
+</br>
 
 ## Usage
 
