@@ -2,7 +2,7 @@
 
 Import and sync IMDb lists to TMDB
 
-![Demo](https://raw.githubusercontent.com/Tetrax-10/import-imdb-lists-to-tmdb/master/assets/demo.gif)
+![Demo](https://raw.githubusercontent.com/Tetrax-10/import-imdb-lists-to-tmdb/main/assets/demo.gif)
 
 </br>
 
