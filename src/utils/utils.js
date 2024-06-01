@@ -4,7 +4,7 @@ import chalk from "chalk"
 
 import { createFolder } from "./glob.js"
 
-export async function downloadImdbListCSV(imdbListId) {
+export async function downloadImdbListCSV(imdbListId, imdbListName) {
     try {
         const response = await fetch(`https://www.imdb.com/list/${imdbListId}/export`)
 
@@ -12,11 +12,7 @@ export async function downloadImdbListCSV(imdbListId) {
             const data = await response.text()
 
             // get list name
-            let filename = `${imdbListId}.csv`
-            const contentDisposition = response.headers.get("content-disposition")
-            if (contentDisposition && contentDisposition.includes("filename=")) {
-                filename = contentDisposition.split("filename=")[1].replace(/"/g, "")
-            }
+            let filename = `${imdbListName}.csv`
 
             createFolder("./imdb-csv")
             fs.writeFileSync(path.join("./imdb-csv", filename), data, "utf8")

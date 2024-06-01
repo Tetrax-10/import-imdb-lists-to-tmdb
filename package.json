@@ -3,7 +3,8 @@
     "author": "Tetrax-10",
     "type": "module",
     "scripts": {
-        "sync": "node src/import.js"
+        "sync": "node src/import.js",
+        "force-sync": "node src/import.js --force"
     },
     "dependencies": {
         "chalk": "^5.3.0",

@@ -1,9 +1,10 @@
 import fs from "fs"
+import path from "path"
 import prettier from "prettier"
 
 const prettierConfig = getJsonContents("./.prettierrc.json")
 
-function fsExsists(paths) {
+export function fsExsists(paths) {
     if (typeof paths === "object") {
         const availablePaths = []
         for (const _path of paths) {
@@ -17,6 +18,15 @@ function fsExsists(paths) {
 export function createFolder(folderPath) {
     if (!fsExsists(folderPath)) {
         fs.mkdirSync(folderPath, { recursive: true })
+    }
+}
+
+export function copyFile(source, destination) {
+    try {
+        createFolder(path.dirname(destination))
+        fs.copyFileSync(source, destination)
+    } catch (error) {
+        console.error(`Error moving file: ${source}`, error)
     }
 }
 

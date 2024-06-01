@@ -80,3 +80,9 @@ Run this command inside `import-imdb-lists-to-tmdb` folder to import/sync your l
 ```sh
 npm run sync
 ```
+
+To force sync your list (clears all titles inside your TMDB list and imports them freshly)
+
+```sh
+npm run force-sync
+```

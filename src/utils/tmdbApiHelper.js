@@ -47,7 +47,7 @@ export async function fetchTmdbIdsFromImdbIds(imdbListItems) {
 
 export async function fetchTmdbListDetails(tmdbListId) {
     try {
-        const response = await fetch(`https://api.themoviedb.org/4/list/${tmdbListId}`, {
+        const response = await fetch(`https://api.themoviedb.org/4/list/${tmdbListId}?language=en-US&page=1`, {
             method: "GET",
             headers: {
                 accept: "application/json",
