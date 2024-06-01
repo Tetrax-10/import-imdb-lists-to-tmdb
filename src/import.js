@@ -54,6 +54,9 @@ async function importLists() {
         const csvCacheFilePath = path.join("./cache", csvFileName)
         let imdbListItems = csvToJson(getFileContents(csvFilePath))
 
+        // get list details
+        let tmdbListDetails = await fetchTmdbListDetails(tmdbListId)
+
         let isTmdbListUpdatable = false
 
         // if list is updatable then extract updatable items
@@ -77,7 +80,6 @@ async function importLists() {
             })
 
             // check if list is already in sync
-            let tmdbListDetails = await fetchTmdbListDetails(tmdbListId)
             if (tmdbListDetails.total_results == Object.keys(imdbListItems).length && !hasAnyOldItemsChanged && imdbListItems.length === imdbCacheListItems.length) {
                 clearLastLine()
                 console.log(chalk.green(`Already in sync: ${imdbListName}`))
@@ -101,6 +103,13 @@ async function importLists() {
 
                 tempImdbListItems.shift()
                 imdbListItems = tempImdbListItems
+            }
+        } else {
+            // check if list is already in sync
+            if (tmdbListDetails.total_results == Object.keys(imdbListItems).length) {
+                clearLastLine()
+                console.log(chalk.green(`Already in sync: ${imdbListName}`))
+                continue
             }
         }
 
