@@ -7,7 +7,7 @@ import { addTitlesToTmdbList, clearTmdbList, creteTmdbList, fetchTmdbIdsFromImdb
 
 const CONFIG = getJsonContents("./config.json")
 
-console.log(chalk.green("\nSyncing lists...\n"))
+console.log(chalk.green("Syncing lists...\n"))
 
 const isForceSync = process.argv.includes("--force")
 

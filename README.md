@@ -24,7 +24,7 @@ git clone https://github.com/Tetrax-10/import-imdb-lists-to-tmdb.git
 
 </br>
 
-## Configuring config.json
+## Configuring `config.json`
 
 ### Syncing IMDb lists with TMDB lists
 
@@ -36,7 +36,7 @@ If you haven't created IMDb lists in TMDB, simply follow the same process specif
 
 ### Sorting
 
-You can sort the IMDb list and then import it to TMDB by specifying the `sortField` field. You can identify the field names by opening the exported CSV and checking the first line. They will be like `Position, Const, Created, Modified`.
+You can sort the IMDb list and then import it to TMDB by specifying the `sortField` field. You can identify the field names by opening the exported CSV and checking the first line. They will be like `Position, Const, Created, Modified, etc...`.
 
 Note: numbers fields are sorted in descending order and strings are sorted in ascending order. You can reverse them by making `isReverse` as `true`.
 
