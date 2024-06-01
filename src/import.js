@@ -11,7 +11,7 @@ console.log(chalk.green("\nSyncing lists...\n"))
 
 const isForceSync = process.argv.includes("--force")
 
-for (let { name: imdbListName, imdbId: imdbListId, tmdbId: tmdbListId, sortField, isReverse: isReverseOrder } of structuredClone(CONFIG).reverse()) {
+for (let { name: imdbListName, imdbId: imdbListId, tmdbId: tmdbListId, sortField, isReverse: isReverseOrder } of CONFIG) {
     let csvFileName
     // check if the id is a imdb list id
     if (/^ls\d{5,}$/.test(imdbListId)) {
