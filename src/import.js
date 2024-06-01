@@ -153,8 +153,8 @@ async function importLists() {
         // copy csv file to cache folder
         copyFile(csvFilePath, csvCacheFilePath)
     }
+
+    console.log(chalk.green("\nDone!"))
 }
 
 importLists()
-
-console.log(chalk.green("\nDone!"))
