@@ -44,6 +44,8 @@ Note: numbers fields are sorted in descending order and strings are sorted in as
 
 ## Sample `config.json`
 
+**Note: From June 27, IMDb removed the feature to export lists through the `/export` endpoint, which is the core of this script to download IMDb lists automatically. For now, you can download the lists manually and place them inside the `imdb-csv` folder, then enter the filename with the extension in the `imdbId` field, just like you do for private lists. In the mean time I will find a way to automate this through other methods.**
+
 ```js
 [
     {
