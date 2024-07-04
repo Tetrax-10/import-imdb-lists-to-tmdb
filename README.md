@@ -6,81 +6,96 @@ Import and sync IMDb lists to TMDB
 
 </br>
 
-## Installation
+## Setup
 
-1. You need to have [Node.js](https://nodejs.org/) installed.
+1. Make sure you have [Node.js](https://nodejs.org/) installed.
 
-2. Clone this repo by running this command or [download](https://github.com/Tetrax-10/import-imdb-lists-to-tmdb/archive/refs/heads/main.zip) this repo.
+2. [Download this repo](https://github.com/Tetrax-10/import-imdb-lists-to-tmdb/archive/refs/heads/main.zip).
 
-```sh
-git clone https://github.com/Tetrax-10/import-imdb-lists-to-tmdb.git
-```
-
-3. Run `npm install` inside `import-imdb-lists-to-tmdb` folder.
+3. Open a terminal inside `import-imdb-lists-to-tmdb` folder and run `npm install`.
 
 4. Rename the file `.env.example` to `.env` and replace the placeholders with your api key and write access token.
 
-    _Note_: You can create write access token from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api) and test it out [here](http://dev.travisbell.com/play/v4_list.html).
+    _Note_: You can create a write access token from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api).
 
 </br>
 
-## Sample `config.json`
+## Configuration
+
+To Import/Sync your IMDb lists to TMDB, all you have to do is configure the `config.json` file.
+
+### Configuration for Importing
+
+If you want to import a IMDb list into TMDB, Open the `config.json` file and specify the IMDb list's ID in the `imdbId` field. Assign `null` to the `tmdbId` field. Don't forget to specify a name in the `name` field.
 
 ```js
-[
-    // automatically downloads csv from IMDb
-    {
-        name: "Watched Movies", // https://www.imdb.com/list/ls540766631 will be synced with https://www.themoviedb.org/list/8282880
-        imdbId: "ls540766631",
-        tmdbId: "8282880",
-        sortField: null,
-        isReverse: true, // TMDB list will be in reverse order
-    },
-    {
-        name: "My Favorite Movies", // https://www.imdb.com/list/ls540746212 will be imported to a new TMDB list
-        imdbId: "ls540746212",
-        tmdbId: null,
-        sortField: "IMDb Rating",
-        isReverse: false,
-    },
-
-    // If you manually download the list, just put them inside `imdb-csv` folder and specify the file name in `imdbId`
-    {
-        name: "Romance Movies", // Romance Movies.csv inside imdb-csv folder will be synced with https://www.themoviedb.org/list/8301861
-        imdbId: "Romance Movies.csv",
-        tmdbId: "8301861",
-        sortField: "Num Votes", // list will be sorted by `Num Votes` and then synced
-        isReverse: true,
-    },
-    {
-        name: "Weird Movies", // Weird Movies.csv inside imdb-csv folder will be imported to a new TMDB list
-        imdbId: "Weird Movies.csv",
-        tmdbId: null,
-        sortField: "Title",
-        isReverse: false,
-    },
-]
+{
+    "name": "Watched Movies",
+    "imdbId": "ls540766631",
+    "tmdbId": null, // when ID is null it will be imported
+    "sortField": null,
+    "isReverse": false
+}
 ```
 
 </br>
 
-### Sorting
+### Configuration for Syncing
 
-You can sort the IMDb list and then import it to TMDB by specifying the `sortField` field. You can identify the field names by opening the exported CSV and checking the first line. They will be like `Position, Const, Created, Modified, etc...`.
+If you already have a TMDB list that's just out of sync, follow the same procedure. However, instead of assigning `null` to the `tmdbId` field, assign the TMDB list's ID to the `tmdbId` field.
 
-Note: numbers fields are sorted in descending order and strings are sorted in ascending order. You can reverse them by making `isReverse` as `true`.
+```js
+{
+    "name": "Watched Movies",
+    "imdbId": "ls540766631",
+    "tmdbId": "8282880", // when ID is not null it will be synced
+    "sortField": null,
+    "isReverse": false
+}
+```
 
 </br>
 
-### Dealing with private IMDb lists
+### Configuration for private IMDb lists
+
+If your list is private, you can't simply put the IMDb list's ID in the `imdbId` field due to permission issues. You can overcome this with these two methods:
 
 #### Manual method
 
-Just export them manually and put them inside `imdb-csv` folder and specify the file name in `imdbId`.
+Just export the private IMDb lists as CSV and put them inside `imdb-csv` folder and specify the file name in `imdbId` with `.csv` extension.
+
+```js
+{
+    "name": "Watched Movies",
+    "imdbId": "Watched Movies.csv", // exported csv file name
+    "tmdbId": "8282880",
+    "sortField": null,
+    "isReverse": false
+}
+```
 
 #### Automated method
 
-Make sure you are logged in to IMDb on chrome. Then go to `chrome://version`, copy your `Profile Path` and paste it next to `CHROME_USER_DATA_PATH` in `.env` file.
+Make sure you are logged in to IMDb on chrome. Then go to `chrome://version`, copy your `Profile Path` and paste it next to `CHROME_USER_DATA_PATH` in `.env` file. So this script can access your IMDb account.
+
+```js
+// It should look like this
+CHROME_USER_DATA_PATH=C:/Users/username/AppData/Local/Google/Chrome/User Data
+```
+
+</br>
+
+### sortField and isReverse in `config.json`
+
+You can sort the IMDb list and then import it to TMDB by specifying a valid field name in the `sortField`.
+
+valid field names are:
+
+```
+Position | Created | Modified | Title | Title Type | IMDb Rating | Runtime (mins) | Year | Num Votes | Release Date | Directors | Your Rating | Date Rated
+```
+
+Note: numbers fields are sorted in descending order and strings are sorted in ascending order. You can reverse them by making `isReverse` as `true`.
 
 </br>
 

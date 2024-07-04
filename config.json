@@ -4,13 +4,27 @@
         "imdbId": "ls540766631",
         "tmdbId": "8282880",
         "sortField": null,
+        "isReverse": true
+    },
+    {
+        "name": "My Favorite Movies",
+        "imdbId": "ls540746212",
+        "tmdbId": null,
+        "sortField": "IMDb Rating",
         "isReverse": false
     },
     {
-        "name": "You can delete me",
-        "imdbId": "You can delete me.csv",
+        "name": "Romance Movies",
+        "imdbId": "Romance Movies.csv",
+        "tmdbId": "8301861",
+        "sortField": "Num Votes",
+        "isReverse": true
+    },
+    {
+        "name": "Weird Movies",
+        "imdbId": "Weird Movies.csv",
         "tmdbId": null,
-        "sortField": null,
+        "sortField": "Title",
         "isReverse": false
     }
 ]
