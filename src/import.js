@@ -1,7 +1,8 @@
 import chalk from "chalk"
 import path from "path"
 
-import { downloadImdbListCSV, csvToJson, wait, printLine, clearLastLine } from "./utils/utils.js"
+import { downloadImdbListCsv } from "./utils/imdbListCsvDownloader.js"
+import { csvToJson, wait, printLine, clearLastLine } from "./utils/utils.js"
 import { getFileContents, getJsonContents, copyFile, writeJSON, fsExsists } from "./utils/glob.js"
 import { addTitlesToTmdbList, clearTmdbList, creteTmdbList, fetchTmdbIdsFromImdbIds, fetchTmdbListDetails } from "./utils/tmdbApiHelper.js"
 
@@ -16,15 +17,12 @@ async function importLists() {
         let csvFileName
         // check if the id is a imdb list id
         if (/^ls\d{5,}$/.test(imdbListId)) {
-            csvFileName = await downloadImdbListCSV(imdbListId, imdbListName)
+            printLine(chalk.yellow(`Downloading: ${imdbListName}.csv from IMDb`))
+            csvFileName = await downloadImdbListCsv(imdbListId, imdbListName)
         } else {
             // local csv support
             csvFileName = imdbListId
         }
-
-        printLine(chalk.yellow(`Syncing: ${imdbListName}`))
-
-        const isNewList = tmdbListId === null ? true : false
 
         if (!csvFileName) {
             if (imdbListId.endsWith(".csv")) {
@@ -33,6 +31,11 @@ async function importLists() {
             }
             continue
         }
+
+        clearLastLine()
+        printLine(chalk.yellow(`Syncing: ${imdbListName}`))
+
+        const isNewList = tmdbListId === null ? true : false
 
         if (isNewList) {
             // create tmdb list for new imdb list

@@ -1,31 +1,3 @@
-import path from "path"
-import fs from "fs"
-import chalk from "chalk"
-
-import { createFolder } from "./glob.js"
-
-export async function downloadImdbListCSV(imdbListId, imdbListName) {
-    try {
-        const response = await fetch(`https://www.imdb.com/list/${imdbListId}/export`)
-
-        if (response.ok) {
-            const data = await response.text()
-
-            // get list name
-            let filename = `${imdbListName}.csv`
-
-            createFolder("./imdb-csv")
-            fs.writeFileSync(path.join("./imdb-csv", filename), data, "utf8")
-            return filename
-        }
-
-        return false
-    } catch (error) {
-        console.error(chalk.red(`Failed to download CSV file for imdb list (${imdbListId}): ${error}`))
-        return false
-    }
-}
-
 export function csvToJson(text, quoteChar = '"', delimiter = ",") {
     text = text.trim()
     let rows = text.split("\n")

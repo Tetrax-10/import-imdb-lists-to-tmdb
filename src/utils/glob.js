@@ -21,6 +21,14 @@ export function createFolder(folderPath) {
     }
 }
 
+export function fsDelete(filePath) {
+    try {
+        fs.rmSync(filePath, { recursive: true, force: true })
+    } catch (err) {
+        return null
+    }
+}
+
 export function copyFile(source, destination) {
     try {
         createFolder(path.dirname(destination))
