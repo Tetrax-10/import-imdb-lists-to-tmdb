@@ -143,11 +143,20 @@ export async function downloadImdbListCsv(imdbListId, imdbListName) {
         }
     }
 
+    async function closeBrowser() {
+        // delete temp downloads
+        fsDelete(`./${tempDownloadFolder}`)
+
+        // close browser
+        await browser.close()
+    }
+
     // export list
     const isListExportedSuccessfully = await exportList(imdbListId)
     if (!isListExportedSuccessfully) {
         clearLastLine()
         console.error(chalk.red("Failed to export list"))
+        await closeBrowser()
         return false
     }
 
@@ -157,6 +166,7 @@ export async function downloadImdbListCsv(imdbListId, imdbListName) {
     if (!isCsvDownloadedSuccessfully) {
         clearLastLine()
         console.error(chalk.red("Failed to download csv"))
+        await closeBrowser()
         return false
     }
 
@@ -165,14 +175,11 @@ export async function downloadImdbListCsv(imdbListId, imdbListName) {
     if (!csvFileName) {
         clearLastLine()
         console.error(chalk.red("Failed to rename csv"))
+        await closeBrowser()
         return false
     }
 
-    // delete temp downloads
-    fsDelete(`./${tempDownloadFolder}`)
-
-    // close browser
-    await browser.close()
+    await closeBrowser()
 
     return csvFileName
 }
