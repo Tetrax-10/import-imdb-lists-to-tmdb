@@ -8,7 +8,7 @@ Import and sync IMDb lists to TMDB
 
 ## Setup
 
-1. Make sure you have [Node.js](https://nodejs.org/) installed.
+1. Make sure you have [Node.js](https://nodejs.org/) installed. You can use [Bun.js](https://bun.sh/) too.
 
 2. [Download this repo](https://github.com/Tetrax-10/import-imdb-lists-to-tmdb/archive/refs/heads/main.zip).
 

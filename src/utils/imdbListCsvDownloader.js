@@ -112,7 +112,7 @@ export async function downloadImdbListCsv(imdbListId, imdbListName) {
 
         // wait until list is ready to download
         while (!(await checkIfListIsReady())) {
-            await wait(1000)
+            await wait(3000)
             await page.reload({ waitUntil: "domcontentloaded" })
         }
 
