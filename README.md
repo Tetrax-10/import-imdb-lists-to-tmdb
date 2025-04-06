@@ -14,9 +14,9 @@ Import and sync IMDb lists to TMDB
 
 3. Open a terminal inside `import-imdb-lists-to-tmdb` folder and run `npm install`.
 
-4. Rename the file `.env.example` to `.env` and replace the placeholders with your api key and write access token.
+4. Rename the file `.env.example` to `.env` and replace the placeholders with your api key and WRITE access token.
 
-    _Note_: You can create a write access token from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api).
+    **Note**: You should create a write access token if you don't have one in-order for this tool to work. Create it from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api).
 
 </br>
 
