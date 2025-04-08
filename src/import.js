@@ -166,7 +166,17 @@ async function importLists() {
 
         if (addTitlesToTmdbListResult) {
             clearLastLine()
-            console.log(chalk.green(`${isNewList ? "Created" : "Synced"}: ${imdbListName}`))
+            if (addTitlesToTmdbListResult === "success") {
+                console.log(chalk.green(`${isNewList ? "Created" : "Synced"}: ${imdbListName}`))
+            } else if (addTitlesToTmdbListResult === "textResponse") {
+                console.warn(
+                    chalk.yellow(
+                        `${isNewList ? "Created" : "Synced"}: ${imdbListName} (The server returned a non-JSON response, possibly due to a large list. Please verify if the list was synced. If not, report this issue at https://github.com/Tetrax-10/import-imdb-lists-to-tmdb/issues)`
+                    )
+                )
+            } else {
+                console.error(chalk.red(`Failed to sync TMDB list: ${imdbListName} (Server response: \n${addTitlesToTmdbListResult}\n)`))
+            }
         }
 
         // copy csv file to cache folder

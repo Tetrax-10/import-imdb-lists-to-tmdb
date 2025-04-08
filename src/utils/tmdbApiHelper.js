@@ -128,12 +128,18 @@ export async function addTitlesToTmdbList(tmdbListId, tmdbIds) {
             body: JSON.stringify({ items: tmdbIds }),
         })
 
-        const data = await response.json()
+        const contentType = response.headers.get("content-type")
 
-        if (data.status_code == 1 && data.success == true) {
-            return true
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json()
+
+            if (data.status_code === 1 && data.success === true) {
+                return "success"
+            } else {
+                return data
+            }
         } else {
-            return false
+            return "textResponse"
         }
     } catch (error) {
         console.error(chalk.red(`Failed to add titles to TMDB list (${tmdbListId}): ${error}`))
