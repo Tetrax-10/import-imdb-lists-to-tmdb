@@ -153,9 +153,9 @@ async function importLists() {
 
         // fetch tmdb titles
         let tmdbListItems
-        if (imdbListItems[0]?.tmdbIdType && imdbListItems[0]?.tmdbId) {
+        if (imdbListItems[0]?.TmdbId && (imdbListItems[0]?.TmdbIdType || imdbListItems[0]?.["Title Type"])) {
             tmdbListItems = imdbListItems.map((film) => {
-                return { media_type: film.tmdbIdType, media_id: film.tmdbId }
+                return { media_type: (film.TmdbIdType ?? film["Title Type"]) === "Movie" ? "movie" : "tv", media_id: film.TmdbId }
             })
         } else {
             tmdbListItems = await fetchTmdbIdsFromImdbIds(imdbListItems)
