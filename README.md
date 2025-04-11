@@ -22,16 +22,16 @@ Import and sync IMDb lists to TMDB
 
 ## Configuration
 
-To Import/Sync your IMDb lists to TMDB, all you have to do is configure the `config.json` file.
+To Import/Sync your IMDb lists to TMDB, all you have to do is configure the `config.json` file and follow the [usage instruction](#usage).
 
 ### Configuration for Importing
 
-If you want to import a IMDb list into TMDB, Open the `config.json` file and specify the IMDb list's ID in the `imdbId` field. Assign `null` to the `tmdbId` field. Don't forget to specify a name in the `name` field.
+If you want to import to a new TMDB list, Open the `config.json` file and specify the IMDb list's ID in the `imdbId` field or if you have the list as a CSV, then just put the file name in the `imdbId` field with `.csv` extension. Set the `tmdbId` field to `null` to create a new TMDB list, and provide a name for the new list in the `name` field.
 
 ```js
 {
     "name": "Watched Movies",
-    "imdbId": "ls540766631",
+    "imdbId": "ls540766631", // or "my-list.csv"
     "tmdbId": null, // when ID is null it will be imported
     "sortField": null,
     "isReverse": false
