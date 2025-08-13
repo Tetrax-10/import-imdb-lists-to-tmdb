@@ -134,6 +134,11 @@ export async function addTitlesToTmdbList(tmdbListId, tmdbIds) {
             const data = await response.json()
 
             if (data.status_code === 1 && data.success === true) {
+                data.results?.forEach((item) => {
+                    if (!item.success) {
+                        console.log(chalk.yellow(`\nCouldn't add ${item.media_type} ${item.media_id}, Error from server: ${item.error}`))
+                    }
+                })
                 return "success"
             } else {
                 return data
