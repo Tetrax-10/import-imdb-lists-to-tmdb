@@ -4,7 +4,7 @@ import path from "path"
 import { downloadImdbListCsv } from "./utils/imdbListCsvDownloader.js"
 import { csvToJson, wait, printLine, clearLastLine } from "./utils/utils.js"
 import { getFileContents, getJsonContents, copyFile, writeJSON, fsExsists } from "./utils/glob.js"
-import { addTitlesToTmdbList, clearTmdbList, creteTmdbList, fetchTmdbIdsFromImdbIds, fetchTmdbListDetails } from "./utils/tmdbApiHelper.js"
+import { addTitlesToTmdbList, clearTmdbList, createTmdbList, fetchTmdbIdsFromImdbIds, fetchTmdbListDetails } from "./utils/tmdbApiHelper.js"
 
 const CONFIG = getJsonContents("./config.json")
 
@@ -39,7 +39,7 @@ async function importLists() {
 
         if (isNewList) {
             // create tmdb list for new imdb list
-            tmdbListId = await creteTmdbList(imdbListName)
+            tmdbListId = await createTmdbList(imdbListName)
 
             if (!tmdbListId) {
                 clearLastLine()
@@ -130,7 +130,7 @@ async function importLists() {
         // sort imdb list
         if (!isTmdbListUpdatable) {
             clearLastLine()
-            printLine(chalk.yellow(`${isNewList ? "Creating" : "Force Syncing"}: ${imdbListName}`))
+            printLine(chalk.yellow(`${isNewList ? "Creating" : "Force Syncing"}: ${imdbListName}\n`))
 
             // wait for 5 secs for TMDB to process
             await wait(5000)

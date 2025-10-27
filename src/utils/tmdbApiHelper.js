@@ -68,7 +68,7 @@ export async function fetchTmdbListDetails(tmdbListId) {
     }
 }
 
-export async function creteTmdbList(name) {
+export async function createTmdbList(name) {
     try {
         const response = await fetch("https://api.themoviedb.org/4/list", {
             method: "POST",
