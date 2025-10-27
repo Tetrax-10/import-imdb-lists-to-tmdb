@@ -8,15 +8,21 @@ Import and sync IMDb lists to TMDB
 
 ## Setup
 
-1. Make sure you have [Node.js](https://nodejs.org/) installed. You can use [Bun.js](https://bun.sh/) too.
+1. Make sure you have [Node.js](https://nodejs.org/) v18+ installed. You can use [Bun.js](https://bun.sh/) too.
 
 2. [Download this repo](https://github.com/Tetrax-10/import-imdb-lists-to-tmdb/archive/refs/heads/main.zip).
 
 3. Open a terminal inside `import-imdb-lists-to-tmdb` folder and run `npm install`.
 
-4. Rename the file `.env.example` to `.env` and replace the placeholders with your api key and WRITE access token.
+4. Create a [TMDB API application](https://www.themoviedb.org/settings/api).
 
-    **Note**: You should create a write access token if you don't have one in-order for this tool to work. Create it from [here](http://dev.travisbell.com/play/v4_auth.html) with your [API Read Access Token](https://www.themoviedb.org/settings/api).
+5. Generate your WRITE access token
+    1. Copy the API Read Access Token from step 4 and paste it into the input [here](http://dev.travisbell.com/play/v4_auth.html)
+    2. Click "Get Request Token"
+    3. Click "Approve Token" (this will open a new tab where you will click Approve)
+    4. Click "Get Access Token"
+
+6. Rename the file `.env.example` to `.env` and replace the placeholders with your api key from your [TMDB API application](https://www.themoviedb.org/settings/api) and WRITE access token generated in step 5.
 
 </br>
 
